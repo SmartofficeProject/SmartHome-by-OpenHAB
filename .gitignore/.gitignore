@@ -1,0 +1,102 @@
+sitemap demo label="Smart Home" {
+ Frame label="Door" {
+ Switch item=SW_DOOR label="Front door" icon="door"
+ }
+ Frame label="Waether" {
+ Text item=TEMPERATURE label="Temperature [%.1f 'C]"
+icon="Temperature"
+ Text item=HUMIDITY label="Humidity [%s]" icon="humidity"
+ }
+ Frame label="ColorLight" (
+ Colorpicker item=LAMP_BB label="Colorlight Bedroom"
+icon="colorpicker"
+ Colorpicker item=LAMP_BK label="ColorlightBedroomkid"
+icon="colorpicker"
+ Colorpicker item=LAMP_OF label="colorlight Office"
+icon="colorpicker"
+ }
+ Frame label="Switch" {
+ Switch item=LAMP_TL label="Light Bathroom" icon-"light"
+ Switch item=LAMP_BB label="Light Bedroom" icon="light"
+ Switch item=LAMP_BK label="Light Bedroomkid" icon="light"
+ Switch item=LAMP_OF label="Light office" icon="light"
+ Switch item=Air label="Air" icon="receiver"
+ Switch item=FAN label="Fan" icon="fan"
+ Switch item=Heating label="Heating" icon="heating"
+ Switch item=Power_Outlet label="Poweroutlet"
+icon="poweroutlet"
+ }
+ Frame label="Energy" {
+ Text item=Voltage icon="energy"
+ Text item=Current icon="energy"
+ Text item=Power icon="energy"
+ Text item=ApparentPower icon="energy"
+ Text item=ReactivePower icon="energy"
+ Text item=PowerFactor icon="energy"
+ Text item=Frequency icon="energy"
+ Text item=EnergyToday icon="calendar"
+ Text item=EnergyYesterday icon="calendar"
+ Text item=EnergyTotal icon="text"
+ }
+}
+
+rule "Heating OFF"
+when
+ Item TEMPERATURE changed 
+then
+ logInfo("test", "House temp Changed to " + TEMPERATURE.state)
+ if (TEMPERATURE.state > 30) {
+ Heating.sendCommand(OFF)
+ logInfo("Heating", "Turned off")
+ } else {
+ logInfo("test", "House temp not than 30")
+ }
+end
+rule "FAN ON"
+when
+ Item TEMPERATURE changed 
+then
+ logInfo("test", "House temp Changed to " + TEMPERATURE.state)
+ if (TEMPERATURE.state > 30) {
+ FAN.sendCommand(ON)
+ logInfo("Fan", "Turned on")
+ } else {
+ logInfo("test", "House temp not more than 30")
+ }
+end
+rule "FAN OFF"
+when
+ Item TEMPERATURE changed 
+then
+ logInfo("test", "House temp Changed to " + TEMPERATURE.state)
+ if (TEMPERATURE.state < 27) {
+ FAN.sendCommand(OFF)
+ logInfo("Fan", "Turned off")
+ } else {
+ logInfo("test", "House temp not less 27")
+ }
+end
+rule "Air ON"
+when
+ Item TEMPERATURE changed 
+then
+ logInfo("test", "House temp Changed to " + TEMPERATURE.state)
+ if (TEMPERATURE.state > 30) {
+ Air.sendCommand(ON)
+ logInfo("Air", "Turned on")
+ } else {
+ logInfo("test", "House temp not more than 30")
+ }
+end
+rule "Air OFF"
+when
+ Item TEMPERATURE changed 
+then
+ logInfo("test", "House temp Changed to " + TEMPERATURE.state)
+ if (TEMPERATURE.state < 27) {
+ Air.sendCommand(ON)
+ logInfo("Air", "Turned off")
+ } else {
+ logInfo("test", "House temp not more than 30")
+ }
+end
